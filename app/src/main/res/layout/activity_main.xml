@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".controller.MainActivity"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Filtre" />
+
+        <Spinner
+            android:id="@+id/spinnerStatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:entries="@array/statut_de_tache" />
+
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/todoListView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:choiceMode="singleChoice"
+        android:listSelector="@color/colorLavander"/>
+
+    <Button
+        android:id="@+id/buttonAddTache"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Nouvelle tâche"
+        android:onClick="onAddTache" />
+
+</LinearLayout>
+

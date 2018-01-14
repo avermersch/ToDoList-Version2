@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+
+
+        <TextView
+            android:id="@+id/textViewTacheName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="10" />
+
+        <CheckBox
+            android:id="@+id/checkboxTacheDone"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="onCheck" />
+
+        <ImageButton
+            android:id="@+id/deleteButton"
+            android:layout_width="0dp"
+            android:layout_height="32dp"
+            android:layout_margin="3dp"
+            android:layout_weight="1"
+            android:contentDescription="delete tache"
+            android:onClick="onDelete"
+            android:padding="0dp"
+            android:scaleType="fitCenter"
+            android:src="@mipmap/delete_icon_round" />
+
+
+</LinearLayout>
