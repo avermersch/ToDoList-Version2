@@ -12,12 +12,13 @@ import android.util.Log;
 public class DatabaseHandler extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "todo.db";
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3;
 
     private static final String TACHE_TABLE_SQL = "CREATE TABLE taches("+
             "id INTEGER PRIMARY KEY AUTOINCREMENT," +
             "tache_name TEXT NOT NULL,"+
-            "done INTEGER NOT NULL)";
+            "done INTEGER NOT NULL," +
+            "user TEXT NOT NULL)";
 
     private Boolean isNew = false;
     private Boolean isUpdated = false;
@@ -42,7 +43,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
      */
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersionNumber, int newVersionNumber) {
-
         this.isUpdated = true;
 
         /**supprime la table si existe

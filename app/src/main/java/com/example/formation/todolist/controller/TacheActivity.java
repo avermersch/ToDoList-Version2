@@ -41,7 +41,7 @@ public class TacheActivity extends AppCompatActivity {
     public void onValidTache(View view){
         String tacheName = this.editTextTacheName.getText().toString();
 
-        if (tacheName.trim() == ""){
+        if (tacheName.trim().equals("")){
             String message = "La tâche ne peut être vide";
             Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
         } else {

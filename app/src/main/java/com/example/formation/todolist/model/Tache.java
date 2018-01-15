@@ -8,6 +8,7 @@ public class Tache {
     private String tacheName;
     private Boolean done = false;
     private Long id;
+    private String user_name;
 
     public Tache() {
     }
@@ -51,5 +52,14 @@ public class Tache {
         } else {
             return 0;
         }
+    }
+
+    public String getUser_name() {
+        return user_name;
+    }
+
+    public Tache setUser_name(String user_name) {
+        this.user_name = user_name;
+        return this;
     }
 }

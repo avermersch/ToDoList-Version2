@@ -50,13 +50,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         //Instantciation du DAO pour les taches
         this.dao = new TacheDAO(this.db);
 
+        //Insertion des données
+        this.dao.insertTodo(this.db.getWritableDatabase());
+
         //Mise à jour de la table
         if(this.db.isUpdated()){
             this.dao.upgrade();
         }
-
-        //Insertion des données
-        this.dao.insertTodo(this.db.getWritableDatabase());
 
         //Référence au widget  ListView sur le layout
         tacheListView = findViewById(R.id.todoListView);
@@ -81,9 +81,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         if(status.equals("Toutes")){
             this.tacheList = this.dao.findAll();
         } else if(status.equals("En cours")){
-            this.tacheList = this.dao.findAllPendingTasks();
+            this.tacheList = this.dao.findAllPendingTaches();
         } else {
-            this.tacheList = this.dao.findAllDoneTasks();
+            this.tacheList = this.dao.findAllDoneTaches();
         }
 
         //Instanciation de l'adapter
@@ -215,7 +215,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
             //Affichage du texte de la tâche
             TextView textView = v.findViewById(R.id.textViewTacheName);
-            textView.setText(currentTache.getTacheName());
+            textView.setText(currentTache.getTacheName() + " " + currentTache.getUser_name());
 
             //Affichage de la case à cocher
             CheckBox checkDone = v.findViewById(R.id.checkboxTacheDone);
