@@ -50,6 +50,14 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         //Instantciation du DAO pour les taches
         this.dao = new TacheDAO(this.db);
 
+        //Insertion des données
+        this.dao.insertTodo(this.db.getWritableDatabase());
+
+        //Mise à jour de la table
+        if(this.db.isNew()||this.db.isNew()) {
+            this.dao.upgrade();
+        }
+
         //Référence au widget  ListView sur le layout
         tacheListView = findViewById(R.id.todoListView);
         spinnerStatus = findViewById(R.id.spinnerStatus);
@@ -80,14 +88,14 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         //Instanciation de l'adapter
         TacheArrayAdapter adapter = new TacheArrayAdapter(this, R.layout.tache_check_view, this.tacheList);
-        //Liaison entre l'adapter et la ListView
+        //Liaison entre l'adaptateur et la ListView
         this.tacheListView.setAdapter(adapter);
     }
 
     /**
      * Ouverture du formulaire de Création d'une tâche
      */
-    public void onAddTache(View view){
+    public void onAddTache(View v){
         Intent intentNewTache = new Intent( this, TacheActivity.class);
         startActivityForResult(intentNewTache, TASK_FORM);
     }

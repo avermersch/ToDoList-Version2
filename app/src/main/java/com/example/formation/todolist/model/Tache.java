@@ -8,11 +8,14 @@ public class Tache {
     private String tacheName;
     private Boolean done = false;
     private Long id;
+    private String user;
 
     public Tache() {
     }
 
-    public Tache(String tacheName) { this.tacheName = tacheName; }
+    public Tache(String tacheName) {
+        this.tacheName = tacheName;
+    }
 
     public Tache(String tacheName, Boolean done){
         this.tacheName = tacheName;
@@ -28,7 +31,9 @@ public class Tache {
         return this;
     }
 
-    public Boolean isDone() { return done; }
+    public Boolean isDone() {
+        return done;
+    }
 
     public Tache setDone(Boolean done) {
         this.done = done;
@@ -51,5 +56,14 @@ public class Tache {
         } else {
             return 0;
         }
+    }
+
+    public String getUser(){
+        return user;
+    }
+
+    public Tache setUser(String user) {
+        this.user = user;
+        return this;
     }
 }

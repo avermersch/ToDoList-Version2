@@ -2,7 +2,11 @@ package com.example.formation.todolist.model;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
+import android.database.sqlite.SQLiteStatement;
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +18,9 @@ public class TacheDAO implements DAOInterface<Tache> {
     //Gestionnaire de connexion
     private DatabaseHandler db;
 
-    public TacheDAO(DatabaseHandler db){this.db = db;}
+    public TacheDAO(DatabaseHandler db){
+        this.db = db;
+    }
 
     /**
      * Récupération d'une entité Tache en fonction de sa clef primaire(id)
@@ -23,7 +29,7 @@ public class TacheDAO implements DAOInterface<Tache> {
     public Tache findOneById(int id) throws SQLiteException{
         //Exécution de la requête
         String[] params = {String.valueOf(id)};
-        String sql = "SELECT id, tache_name, done FROM taches WHERE id=?";
+        String sql = "SELECT id, tache_name, done, user FROM taches WHERE id=?";
         Cursor cursor = this.db.getReadableDatabase().rawQuery(sql, params);
         //Instanciation de la tache
         Tache Tache = new Tache();
@@ -48,6 +54,7 @@ public class TacheDAO implements DAOInterface<Tache> {
         Tache.setId(cursor.getLong(0));
         Tache.setTacheName(cursor.getString(1));
         Tache.setDone(! cursor.getString(2).equals("0"));
+        Tache.setUser(cursor.getString(3));
 
         return Tache;
     }
@@ -62,7 +69,7 @@ public class TacheDAO implements DAOInterface<Tache> {
         List<Tache> TacheList = new ArrayList<>();
 
         //Exécution de la requête sql
-        String sql = "SELECT id, tache_name, done FROM taches";
+        String sql = "SELECT id, tache_name, done, user FROM taches";
         Cursor cursor = this.db.getReadableDatabase().rawQuery(sql, null);
         //Boucle sur le curseur
         while(cursor.moveToNext()){
@@ -85,7 +92,7 @@ public class TacheDAO implements DAOInterface<Tache> {
         List<Tache> TacheList = new ArrayList<>();
 
         //Exécution de la requête sql
-        String sql = "SELECT id, tache_name, done FROM taches WHERE done=?";
+        String sql = "SELECT id, tache_name, done, user FROM taches WHERE done=?";
         String[] params = {done?"1":"0"};
         Cursor cursor = this.db.getReadableDatabase().rawQuery(sql, params);
         //Boucle sur le curseur
@@ -134,6 +141,7 @@ public class TacheDAO implements DAOInterface<Tache> {
         ContentValues values = new ContentValues();
         values.put("tache_name", entity.getTacheName());
         values.put("done", entity.getDoneAsInteger());
+        values.put("user", entity.getUser());
 
         return values;
     }
@@ -157,4 +165,43 @@ public class TacheDAO implements DAOInterface<Tache> {
                 this.getContentValuesFromEntity(entity),
                 "id=?", params);
     }
+
+    public void insertTodo(SQLiteDatabase db) {
+        if(this.db.isNew()) {
+            String sql = "INSERT INTO taches (tache_name, done) VALUES (?,?)";
+            //Compilation de la requête
+            SQLiteStatement statement = db.compileStatement(sql);
+
+            //Définition des données et exécution multiple de la requête
+            statement.bindString(1,"Sortir le chat");
+            statement.bindLong(2, 0);
+            statement.executeInsert();
+
+            //Deuxième requête
+            statement.bindString(1, "Sortir la poubelle");
+            statement.bindLong(2, 0);
+            statement.executeInsert();
+        }
+    }
+
+    public void upgrade(){
+        SQLiteDatabase db = this.db.getWritableDatabase();
+        //Début de la transaction
+        db.beginTransaction();
+        try {
+            //La ou les commandes SQL à exécuter dans une transaction
+            db.execSQL("ALTER TABLE taches ADD user TEXT");
+            db.execSQL("UPDATE taches SET user = 'anonyme'");
+            //Définir la transaction est un succés
+            db.setTransactionSuccessful();
+        } catch (Exception ex){
+            Log.d("DatabaseHandler", ex.getMessage());
+        } finally {
+            //Finalisation de la transaction
+            //Commit si la transaction est un succés
+            //sinon rollback (annulation des opérations)
+            db.endTransaction();
+        }
+    }
+
 }
