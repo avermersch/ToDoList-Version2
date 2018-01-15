@@ -168,18 +168,20 @@ public class TacheDAO implements DAOInterface<Tache> {
 
     public void insertTodo(SQLiteDatabase db) {
         if(this.db.isNew()) {
-            String sql = "INSERT INTO taches (tache_name, done) VALUES (?,?)";
+            String sql = "INSERT INTO taches (tache_name, done, user) VALUES (?,?,?)";
             //Compilation de la requête
             SQLiteStatement statement = db.compileStatement(sql);
 
             //Définition des données et exécution multiple de la requête
             statement.bindString(1,"Sortir le chat");
             statement.bindLong(2, 0);
+            statement.bindString(3, "utilisateur");
             statement.executeInsert();
 
             //Deuxième requête
             statement.bindString(1, "Sortir la poubelle");
             statement.bindLong(2, 0);
+            statement.bindString(3, "utilisateur");
             statement.executeInsert();
         }
     }

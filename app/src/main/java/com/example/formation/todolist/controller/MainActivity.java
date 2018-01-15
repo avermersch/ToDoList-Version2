@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         this.dao.insertTodo(this.db.getWritableDatabase());
 
         //Mise à jour de la table
-        if(this.db.isNew()||this.db.isNew()) {
+        if(this.db.isUpdated()) {
             this.dao.upgrade();
         }
 
