@@ -2,7 +2,11 @@ package com.example.formation.todolist.model;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
+import android.database.sqlite.SQLiteStatement;
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +18,9 @@ public class TacheDAO implements DAOInterface<Tache> {
     //Gestionnaire de connexion
     private DatabaseHandler db;
 
-    public TacheDAO(DatabaseHandler db){this.db = db;}
+    public TacheDAO(DatabaseHandler db){
+        this.db = db;
+    }
 
     /**
      * Récupération d'une entité Tache en fonction de sa clef primaire(id)
@@ -156,5 +162,44 @@ public class TacheDAO implements DAOInterface<Tache> {
         this.db.getWritableDatabase().update("taches",
                 this.getContentValuesFromEntity(entity),
                 "id=?", params);
+    }
+
+    public void insertTodo(SQLiteDatabase db){
+        if(this.db.isNew()){
+            String sql = "INSERT INTO tasks (task_name, done)  VALUES (?,?)";
+            //Compilation de la requête
+            SQLiteStatement statement = db.compileStatement(sql);
+
+            //Définition des données et exécution multiples de la requête
+            statement.bindString(1, "Sortir le chat");
+            statement.bindLong(2, 0);
+            statement.executeInsert();
+
+            //Deuxième requête
+            statement.bindString(1, "Sortir la poubelle");
+            statement.bindLong(2, 0);
+            statement.executeInsert();
+        }
+    }
+
+    public void upgrade(){
+        SQLiteDatabase db = this.db.getWritableDatabase();
+        //Début de la transaction
+        db.beginTransaction();
+        try{
+            //La ou les commandes SQL a exécuter dans une transaction
+            db.execSQL("ALTER TABLE taches ADD user TEXT");
+            db.execSQL("UPDATE taches SET user='anonymous'");
+            //Définir que la transaction est un succès
+            db.setTransactionSuccessful();
+        } catch (Exception ex){
+            Log.d("DatabaseHandler", ex.getMessage());
+        }finally{
+            /**Finalisation de la transaction
+             * commit si la transaction est un succes
+             * sinon rollback (annulation des opérations
+             */
+            db.endTransaction();
+        }
     }
 }

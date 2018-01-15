@@ -3,6 +3,7 @@ package com.example.formation.todolist.model;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 /**
  * Création de la structure de la base de données
@@ -11,12 +12,15 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DatabaseHandler extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "todo.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     private static final String TACHE_TABLE_SQL = "CREATE TABLE taches("+
             "id INTEGER PRIMARY KEY AUTOINCREMENT," +
             "tache_name TEXT NOT NULL,"+
             "done INTEGER NOT NULL)";
+
+    private Boolean isNew = false;
+    private Boolean isUpdated = false;
 
     public DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -26,7 +30,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
      *Création de la base de données si inexistante
      */
     @Override
-    public void onCreate(SQLiteDatabase sqLiteDatabase) { sqLiteDatabase.execSQL(TACHE_TABLE_SQL); }
+    public void onCreate(SQLiteDatabase sqLiteDatabase) {
+        //Création de la table
+        sqLiteDatabase.execSQL(TACHE_TABLE_SQL);
+        this.isNew = true;
+    }
 
     /**
      *Mise à jour de la base de données
@@ -34,9 +42,21 @@ public class DatabaseHandler extends SQLiteOpenHelper {
      */
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersionNumber, int newVersionNumber) {
-        //supprime la table si existe
+
+        this.isUpdated = true;
+
+        /**supprime la table si existe
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS taches");
-        //table se crée
+        //table se crée et se met à jour
         this.onCreate(sqLiteDatabase);
+        this.isUpdated = true;*/
+    }
+
+    public Boolean isNew() {
+        return isNew;
+    }
+
+    public Boolean isUpdated() {
+        return isUpdated;
     }
 }

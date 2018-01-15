@@ -50,13 +50,21 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         //Instantciation du DAO pour les taches
         this.dao = new TacheDAO(this.db);
 
+        //Mise à jour de la table
+        if(this.db.isUpdated()){
+            this.dao.upgrade();
+        }
+
+        //Insertion des données
+        this.dao.insertTodo(this.db.getWritableDatabase());
+
         //Référence au widget  ListView sur le layout
         tacheListView = findViewById(R.id.todoListView);
         spinnerStatus = findViewById(R.id.spinnerStatus);
 
         spinnerStatus.setOnItemSelectedListener(this);
 
-        this.tacheList = this.dao.findAll();
+        //this.tacheList = this.dao.findAll();
         tacheListInit();
     }
 
@@ -118,7 +126,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         if(requestCode == TASK_FORM && resultCode == RESULT_OK){
-            this.tacheList = this.dao.findAll();
+            //this.tacheList = this.dao.findAll();
             tacheListInit();
         }
     }
