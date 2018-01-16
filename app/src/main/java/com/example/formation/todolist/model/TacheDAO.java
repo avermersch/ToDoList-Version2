@@ -146,7 +146,6 @@ public class TacheDAO implements DAOInterface<Tache> {
         values.put("tache_name", entity.getTacheName());
         values.put("done", entity.getDoneAsInteger());
         values.put("user", entity.getUser());
-
         return values;
     }
 
@@ -156,8 +155,7 @@ public class TacheDAO implements DAOInterface<Tache> {
     private void insert(Tache entity) {
         Long id = this.db.getWritableDatabase().insert(
                 "taches", null,
-                this.getContentValuesFromEntity(entity));
-        entity.setId(id);
+                this.getContentValuesFromEntity(entity));entity.setId(id);
     }
 
     /**
@@ -172,7 +170,7 @@ public class TacheDAO implements DAOInterface<Tache> {
 
     public void insertTodo(SQLiteDatabase db){
         if(this.db.isNew()){
-            String sql = "INSERT INTO taches (tache_name, done, user)  VALUES (?,?)";
+            String sql = "INSERT INTO taches (tache_name, done)  VALUES (?,?)";
             //Compilation de la requête
             SQLiteStatement statement = db.compileStatement(sql);
 

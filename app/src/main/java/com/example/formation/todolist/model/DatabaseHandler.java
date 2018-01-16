@@ -12,7 +12,7 @@ import android.util.Log;
 public class DatabaseHandler extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "todo.db";
-    private static final int DATABASE_VERSION = 6;
+    private static final int DATABASE_VERSION = 7;
 
     private static final String TACHE_TABLE_SQL = "CREATE TABLE taches("+
             "id INTEGER PRIMARY KEY AUTOINCREMENT," +
