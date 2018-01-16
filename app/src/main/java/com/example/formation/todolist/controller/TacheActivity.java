@@ -18,6 +18,7 @@ import com.example.formation.todolist.model.TacheDAO;
 public class TacheActivity extends AppCompatActivity {
 
     private EditText editTextTacheName;
+    private EditText editTextUser;
 
     /**
      * Création de l'activité
@@ -28,6 +29,7 @@ public class TacheActivity extends AppCompatActivity {
         setContentView(R.layout.activity_tache);
 
         editTextTacheName = findViewById(R.id.editTextTache);
+        editTextUser = findViewById(R.id.editTextUser);
 
         ActionBar actionBar = getActionBar();
         if(actionBar != null){
@@ -40,12 +42,14 @@ public class TacheActivity extends AppCompatActivity {
      */
     public void onValidTache(View view){
         String tacheName = this.editTextTacheName.getText().toString();
+        String user = this.editTextUser.getText().toString();
 
-        if (tacheName.trim().equals("")){
-            String message = "La tâche ne peut être vide";
+        if (tacheName.trim().equals("")  || user.trim().equals("")){
+            String message = "La tâche et/ou l'utilisateur ne peut être vide";
             Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
         } else {
             Tache tache = new Tache(tacheName);
+            tache.setUser(user);
             this.processForm(tache);
         }
     }

@@ -54,7 +54,7 @@ public class TacheDAO implements DAOInterface<Tache> {
         Tache.setId(cursor.getLong(0));
         Tache.setTacheName(cursor.getString(1));
         Tache.setDone(! cursor.getString(2).equals("0"));
-        Tache.setUser_name(cursor.getString(3));
+        Tache.setUser(cursor.getString(3));
 
         return Tache;
     }
@@ -107,9 +107,13 @@ public class TacheDAO implements DAOInterface<Tache> {
 
     }
 
-    public List<Tache> findAllPendingTaches() { return this.findAllByDoneStatus(false); }
+    public List<Tache> findAllPendingTaches() {
+        return this.findAllByDoneStatus(false);
+    }
 
-    public List<Tache> findAllDoneTaches() { return this.findAllByDoneStatus(true); }
+    public List<Tache> findAllDoneTaches() {
+        return this.findAllByDoneStatus(true);
+    }
 
     /**
      * Suppression d'une tâche en fonction de sa clef primaire
@@ -141,7 +145,7 @@ public class TacheDAO implements DAOInterface<Tache> {
         ContentValues values = new ContentValues();
         values.put("tache_name", entity.getTacheName());
         values.put("done", entity.getDoneAsInteger());
-        values.put("user", entity.getUser_name());
+        values.put("user", entity.getUser());
 
         return values;
     }
@@ -168,20 +172,19 @@ public class TacheDAO implements DAOInterface<Tache> {
 
     public void insertTodo(SQLiteDatabase db){
         if(this.db.isNew()){
-            String sql = "INSERT INTO taches (tache_name, done, user)  VALUES (?,?,?)";
+            String sql = "INSERT INTO taches (tache_name, done, user)  VALUES (?,?)";
             //Compilation de la requête
             SQLiteStatement statement = db.compileStatement(sql);
 
             //Définition des données et exécution multiples de la requête
             statement.bindString(1, "Sortir le chat");
             statement.bindLong(2, 0);
-            statement.bindString(3,"utilisateur");
             statement.executeInsert();
 
             //Deuxième requête
             statement.bindString(1, "Sortir la poubelle");
             statement.bindLong(2, 0);
-            statement.bindString(3,"utilisateur");
+            Log.i("toto", "COUCOU");
             statement.executeInsert();
         }
     }

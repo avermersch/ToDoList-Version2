@@ -17,8 +17,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".controller.TacheActivity"
-            android:parentActivityName=".controller.MainActivity">
-        </activity>
+            android:parentActivityName=".controller.MainActivity"></activity>
     </application>
 
 </manifest>

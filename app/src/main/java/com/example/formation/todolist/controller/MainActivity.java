@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,7 +30,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
-    public static final int TASK_FORM = 1;
+    public static final int TACHE_FORM = 1;
 
     private ListView tacheListView;
     private List<Tache> tacheList;
@@ -54,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         this.dao.insertTodo(this.db.getWritableDatabase());
 
         //Mise à jour de la table
-        if(this.db.isUpdated()){
+        if(this.db.isUpdated() || this.db.isNew()){
             this.dao.upgrade();
         }
 
@@ -95,9 +96,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     /**
      * Ouverture du formulaire de Création d'une tâche
      */
-    public void onAddTache(View view){
+    public void onAddTache(View v){
         Intent intentNewTache = new Intent( this, TacheActivity.class);
-        startActivityForResult(intentNewTache, TASK_FORM);
+        startActivityForResult(intentNewTache, TACHE_FORM);
     }
 
     /**
@@ -125,7 +126,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
      */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
-        if(requestCode == TASK_FORM && resultCode == RESULT_OK){
+        if(requestCode == TACHE_FORM && resultCode == RESULT_OK){
             //this.tacheList = this.dao.findAll();
             tacheListInit();
         }
@@ -215,7 +216,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
             //Affichage du texte de la tâche
             TextView textView = v.findViewById(R.id.textViewTacheName);
-            textView.setText(currentTache.getTacheName() + " " + currentTache.getUser_name());
+            textView.setText(currentTache.getTacheName() + " (" + currentTache.getUser() + ")");
 
             //Affichage de la case à cocher
             CheckBox checkDone = v.findViewById(R.id.checkboxTacheDone);

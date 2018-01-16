@@ -8,8 +8,9 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        android:layout_weight="1">
 
         <TextView
             android:layout_width="match_parent"
@@ -29,8 +30,8 @@
     <ListView
         android:id="@+id/todoListView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:choiceMode="singleChoice"
+        android:layout_height="0dp"
+        android:layout_weight="9"
         android:listSelector="@color/colorLavander"/>
 
     <Button
@@ -38,6 +39,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Nouvelle tâche"
+        android:layout_gravity="bottom"
         android:onClick="onAddTache" />
 
 </LinearLayout>
